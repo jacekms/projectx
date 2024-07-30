@@ -1,0 +1,9 @@
+g++ -std=c++17 --coverage -isystem /usr/include/gtest -pthread test_logger.cpp -lgtest -lgtest_main -o test_logger
+./test_logger 
+lcov --capture --directory . --output-file coverage.info
+sudo apt install lcov
+lcov --capture --directory . --output-file coverage.info
+genhtml coverage.info --output-directory out
+
+
+
