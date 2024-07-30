@@ -1,3 +1,5 @@
+//TODO  more stats, test with monotonic scalable rate clock, more gtests, sim v2 multithreaded, to the moon
+
 1. Build
 
 $ ./xbuild.sh 
@@ -6,11 +8,13 @@ $ ./xbuild.sh
 
 $ ./build/sim_h3_mining 15 3 120
 
-
 3. Check the log file 'SH3M_Log.txt'
 
 Example log:
 
+**Real_time, sim_clock, sim_clock in messages
+microseconds, minutes,  message time values in minutes
+**
 ```60848577796, 0, Log started. Output to file='SH3M_Log.txt'
 60848577846, 0, Timestamp unit [us]
 60848577984, 0, Truck0 [Mining] till time=109 (for 109)```
