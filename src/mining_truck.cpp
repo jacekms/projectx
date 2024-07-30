@@ -25,7 +25,7 @@ MiningTruck::MiningTruck(int idx) :
 }
 
 void MiningTruck::mine() {
-    stats.add_mining_time(this->mining_time);
+    this->add_mining_time(this->mining_time);
 
     logger.log("Truck%d mined for %2.1lf hours.\n", this->id,
         static_cast<double>(this->mining_time.count()) / 60.0); // to hours
@@ -34,6 +34,7 @@ void MiningTruck::mine() {
 }
 
 void MiningTruck::travel_to_unload() {
+    this->add_travel_time(std::chrono::minutes(MiningTruckCfg::TRAVEL_TIME));
     logger.log("Truck%d traveling to unload station.\n", this->id);
     this->transition_state(State::WaitingInQueue);
 }
@@ -44,12 +45,15 @@ void MiningTruck::queue_to_unload() {
 }
 
 void MiningTruck::unload() {
+    add_wait_time_in_unload_queues(this->unload_time);
     logger.log("Truck%d waiting in queue and unloading for %ld.\n", this->id,
                this->unload_time.count());
     this->transition_state(State::TravelingToMine);
 }
 
 void MiningTruck::travel_to_mine() {
+    this->add_travel_time(std::chrono::minutes(MiningTruckCfg::TRAVEL_TIME));
+    this->add_operation_cycle();
     logger.log("Truck%d traveling to mining site.\n", this->id);
     this->transition_state(State::Mining);
 }
@@ -65,6 +69,10 @@ int MiningTruck::get_id() const {
 
 std::chrono::minutes MiningTruck::get_unload_duration() const {
     return this->unload_time;
+}
+
+std::chrono::minutes MiningTruck::get_mining_time() const {
+    return this->mining_time;
 }
 
 MiningTruck::State MiningTruck::get_state() const {

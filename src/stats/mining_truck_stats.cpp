@@ -66,11 +66,13 @@ double MiningTruckStats::get_mining_to_sim_time_ratio() const {
 }
 
 void MiningTruckStats::print_statistics() const {
-    logger.log("Total Operation Cycles: %d\n", total_operation_cycles);
-    logger.log("Total Wait Time in Unload Queues: %ld minutes\n", total_wait_time_in_unload_queues.count());
-    logger.log("Average Wait Time in Unload Queues: %.2f minutes\n", get_avg_wait_time_in_unload_queues());
-    logger.log("Total Travel Time: %ld minutes\n", total_travel_time.count());
-    logger.log("Total Mining Time: %ld minutes\n", total_mining_time.count());
+    logger.log("Total Operation Cycles: %d\n", this->total_operation_cycles);
+    logger.log("Total Wait Time in Unload Queues: %ld minutes\n",
+               this->total_wait_time_in_unload_queues.count());
+    logger.log("Average Wait Time in Unload Queues: %.2f minutes\n",
+               get_avg_wait_time_in_unload_queues());
+    logger.log("Total Travel Time: %ld minutes\n", this->total_travel_time.count());
+    logger.log("Total Mining Time: %ld minutes\n", this->total_mining_time.count());
     logger.log("Average Mining Time: %.2f minutes\n", get_avg_mining_time());
     logger.log("Mining to Simulation Time Ratio: %.2f%%\n", get_mining_to_sim_time_ratio() * 100);
 }

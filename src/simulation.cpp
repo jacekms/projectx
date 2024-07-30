@@ -49,6 +49,7 @@ void Simulation::run()
         }
 
         Event next_event = next_event_opt.value();
+        SH3M_ASSERT(next_event.truck != nullptr);
 
         auto time_now = Infra::SH3M_SimStepClock::now();
 
@@ -61,6 +62,16 @@ void Simulation::run()
         Infra::SH3M_SimStepClock::set_time(next_event.time);
 
         next_event.execute();
+
+        ///TODO all per state operations move to a fun truck_state_action()
+        if (next_event.truck->get_state() == MiningTruck::State::Mining)
+        {
+            this->add_mine_time(next_event.truck->get_mining_time());
+//            logger.log("Sim: Truck%u executed event in [%s] state add_mineT=%ld\n",
+//                       next_event.truck->get_id(),
+//                       next_event.truck->get_state_name(next_event.truck->get_state()),
+//                       next_event.truck->get_mining_time().count());
+        }
 
         logger.log("Sim: Truck%u executed event in [%s] state\n",
                     next_event.truck->get_id(),
@@ -92,6 +103,9 @@ void Simulation::queue_truck_for_unloading(MiningTruck* truck)
                truck->get_id(),
                station->nearest_time_to_unload);
 
+    this->add_wait_in_unload_queue(truck->get_unload_duration());
+    this->add_operation_cycle();
+
     station->add_to_queue(truck);
 
 }
@@ -121,7 +135,6 @@ void Simulation::schedule_next_event()
 
     SH3M_ASSERT(next_truck != nullptr); // There must be an event
 
-
     if (next_truck) {
         logger.log("Sim: Truck%u nearest event in state [%s] time=%" PRIu64 "\n",
                     next_truck->get_id(),
@@ -142,14 +155,17 @@ void Simulation::report_statistics() const
     logger.log("Simulation\n");
     this->print_statistics();
 
+    logger.log("========================= ========== ========================\n");
     for (const auto& truck : trucks) {
         logger.log("Truck%d\n", truck.get_id());
         truck.print_statistics();
     }
+    logger.log("========================= ========== ========================\n");
     for (const auto& station : stations) {
         logger.log("Station%d\n", station.get_id());
         station.print_statistics();
     }
+    logger.log("========================= ========== ========================\n");
 }
 
 MiningUnloadStation* Simulation::find_shortest_wait_time_station()
@@ -157,7 +173,7 @@ MiningUnloadStation* Simulation::find_shortest_wait_time_station()
     return &*std::min_element(stations.begin(), stations.end(),
         [](const MiningUnloadStation& a, const MiningUnloadStation& b) {
             return a.nearest_time_to_unload < b.nearest_time_to_unload;
-        //return a.queue.size() < b.queue.size();
+            //return a.queue.size() < b.queue.size();
         });
 }
 
@@ -181,6 +197,8 @@ bool Simulation::try_unloading_truck(Infra::SH3M_SimStepClock::time_point neares
                    truck->get_id(),
                    truck->get_state_name(truck->get_state()),
                    nearest_unload_time);
+
+        this->increment_unloads();
 
         station->process_queue();
 

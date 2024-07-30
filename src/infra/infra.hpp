@@ -1,6 +1,7 @@
 #ifndef INFRA_HPP
 #define INFRA_HPP
 
+#include "sh3m_assert.hpp"
 #include "logger.hpp"
 #include "sim_step_clock.hpp"
 

@@ -34,7 +34,7 @@ public:
             return false;
         }
         ///TODO Add date and time to the filename
-        FILE* new_file = std::fopen(filename, "a");
+        FILE* new_file = std::fopen(filename, "w");
         if (new_file == nullptr) {
             this->log("Unable to open log file=%s. Continuing to use stdout.\n", filename);
             return false;

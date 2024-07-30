@@ -4,11 +4,15 @@
 namespace SimH3Mining {
 
 UnloadStationStats::UnloadStationStats()
-    : total_unloads(0), total_queue_used_time(0)
+    : total_queued(0), total_unloads(0), total_queue_used_time(0)
 {}
 
 void UnloadStationStats::register_total_simulation_time(std::chrono::minutes time) {
     total_simulation_time = time;
+}
+
+void UnloadStationStats::increment_queued() {
+    this->total_queued++;
 }
 
 void UnloadStationStats::increment_unloads() {

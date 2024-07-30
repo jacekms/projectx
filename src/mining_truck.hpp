@@ -57,8 +57,6 @@ private:
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution;
 
-    MiningTruckStats stats;
-
 public:
     MiningTruck(int idx);
 
@@ -73,6 +71,7 @@ public:
     int get_id() const;
 
     std::chrono::minutes get_unload_duration() const;
+    std::chrono::minutes get_mining_time() const;
 
     State get_state() const;
 

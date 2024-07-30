@@ -36,7 +36,8 @@ set(INFRA_SOURCES
 )
 
 # Option to enable debug build with gdb
-option(ENABLE_GDB "Enable GDB debugging" ON)
+#option(ENABLE_GDB "Enable GDB debugging" ON)
+option(ENABLE_GDB "Enable GDB debugging" OFF)
 
 if (ENABLE_GDB)
     message(STATUS "GDB debugging enabled")

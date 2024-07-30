@@ -9,6 +9,7 @@ namespace SimH3Mining {
 
 class UnloadStationStats {
 private:
+    int total_queued;
     int total_unloads;
     std::chrono::minutes total_queue_used_time;
     static inline std::chrono::minutes total_simulation_time = std::chrono::minutes(0);
@@ -18,6 +19,7 @@ public:
 
     static void register_total_simulation_time(std::chrono::minutes time);
 
+    void increment_queued();
     void increment_unloads();
     void add_queue_used_time(std::chrono::minutes time);
 
