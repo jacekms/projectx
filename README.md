@@ -13,9 +13,9 @@ $ ./build/sim_h3_mining 15 3 120
 Example log:
 
 ```
-**Real_time, sim_clock, sim_clock in messages
-microseconds, minutes,  message time values in minutes
-**
+real_time,    sim_clock, sim_clock in messages
+microseconds, minutes,   message time values in minutes
+
 60848577796, 0, Log started. Output to file='SH3M_Log.txt'
 60848577846, 0, Timestamp unit [us]
 60848577984, 0, Truck0 [Mining] till time=109 (for 109)```
